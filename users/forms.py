@@ -20,3 +20,7 @@ class UserRegistrationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+class UserLoginForm(forms.Form):
+    username = forms.CharField(required=True)
+    password = forms.CharField(required=True, widget=forms.PasswordInput)
