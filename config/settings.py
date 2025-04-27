@@ -11,10 +11,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -40,7 +42,43 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "rest_framework",
+    "rest_framework.authtoken",
+    "dj_rest_auth",
+
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "dj_rest_auth.registration",
+
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.github"
 ]
+
+SITE_ID = 1
+
+REST_AUTH = {
+    "REGISTER_SERIALIZER": "users.serializers.RegisterSerializer"
+}
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APP": [
+            {
+                "client_id": os.getenv("GOOGLE_CLIENT_ID"),  
+                "secret": os.getenv("GOOGLE_CLIENT_SECRET"), 
+                "key": ""
+            },
+        ],
+        "SCOPE": [
+            "profile", 
+            "email"
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online"
+        },
+    }
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -50,6 +88,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
