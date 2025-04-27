@@ -1,47 +1,16 @@
-from django.shortcuts import render
-from .forms import UserRegistrationForm, UserLoginForm
-from django.http import HttpResponse
-from django.contrib.auth import authenticate, login
-
-def register_view(request):
-    if request.method == "POST":
-        form = UserRegistrationForm(request.POST)
-
-        if form.is_valid():
-            user = form.save(commit=False)
-            
-            user.set_password(
-                form.cleaned_data["password1"]
-            )
-
-            user.save()
-            return HttpResponse("Registered successfully")
-    else:
-        form = UserRegistrationForm()
-
-    return render(request, "users/register.html", {"form": form})
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.github.views import GitHubOAuth2Adapter
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+from dj_rest_auth.registration.views import SocialLoginView
 
 
-def login_view(request):
-    if request.method == "POST":
-        form = UserLoginForm(request.POST) 
+class GoogleLogin(SocialLoginView): 
+    adapter_class = GoogleOAuth2Adapter
+    callback_url = "http://localhost:8000/account/social/google/callback/"
+    client_class = OAuth2Client
 
-        if form.is_valid():
-            user = authenticate(
-                request,
-                username=form.cleaned_data["username"],
-                password=form.cleaned_data["password"]
-            ) 
-
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return HttpResponse("Authenticated successfully")
-                else:
-                    return HttpResponse("Disabled account")
-            else:
-                return HttpResponse("Invalid login")
-    else:
-        form = UserLoginForm()
-    
-    return render(request, "users/login.html", {"form": form})
+# Todo: Create GitHub OAuth App
+class GitHubLogin(SocialLoginView):
+    adapter_class = GitHubOAuth2Adapter
+    callback_url = "http://localhost:8000/account/social/github/callback/"
+    client_class = OAuth2Client
