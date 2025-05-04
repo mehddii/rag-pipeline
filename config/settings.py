@@ -58,25 +58,29 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 REST_AUTH = {
-    "REGISTER_SERIALIZER": "users.serializers.RegisterSerializer"
+    "REGISTER_SERIALIZER": "users.serializers.CustomRegisterSerializer"
 }
 
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
-        "APP": [
-            {
-                "client_id": os.getenv("GOOGLE_CLIENT_ID"),  
-                "secret": os.getenv("GOOGLE_CLIENT_SECRET"), 
-                "key": ""
-            },
-        ],
-        "SCOPE": [
-            "profile", 
-            "email"
-        ],
-        "AUTH_PARAMS": {
-            "access_type": "online"
+        "APP": {  
+            "client_id": os.getenv("GOOGLE_CLIENT_ID"),
+            "secret": os.getenv("GOOGLE_CLIENT_SECRET"),
+            "key": ""
         },
+        "SCOPE": ["profile", "email"],
+        "AUTH_PARAMS": {"access_type": "online"},
+        "VERIFIED_EMAIL": True
+    },
+    "github": {
+        "APP": {  
+            "client_id": os.getenv("GITHUB_CLIENT_ID"),
+            "secret": os.getenv("GITHUB_CLIENT_SECRET"),
+            "key": ""
+        },
+        "SCOPE": ["user:email", "read:user"],
+        "AUTH_PARAMS": {"allow_signup": False},  
+        "VERIFIED_EMAIL": True
     }
 }
 
