@@ -61,6 +61,10 @@ REST_AUTH = {
     "REGISTER_SERIALIZER": "users.serializers.CustomRegisterSerializer"
 }
 
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_USERNAME_REQUIRED = False
+
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "APP": {  
