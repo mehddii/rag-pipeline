@@ -5,12 +5,13 @@ charset-normalizer==3.4.1
 cryptography==44.0.2
 dj-rest-auth==7.0.1
 Django==5.2
-django-allauth==65.7.0
+django-allauth==65.2.0
 djangorestframework==3.16.0
+djangorestframework_simplejwt==5.5.0
 idna==3.10
 oauthlib==3.2.2
 pycparser==2.22
-PyJWT==2.10.1
+PyJWT==2.9.0
 python-dotenv==1.1.0
 regex==2024.11.6
 requests==2.32.3
