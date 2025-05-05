@@ -57,12 +57,26 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
-REST_AUTH = {
-    "REGISTER_SERIALIZER": "users.serializers.CustomRegisterSerializer"
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+    )
 }
 
+REST_AUTH = {
+    "REGISTER_SERIALIZER": "users.serializers.CustomRegisterSerializer",
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "auth-token",
+    "JWT_AUTH_REFRESH_COOKIE": "refresh-token",
+}
+
+AUTHENTICATION_BACKENDS = [
+    "allauth.account.auth_backends.AuthenticationBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_USERNAME_REQUIRED = False
 
 SOCIALACCOUNT_PROVIDERS = {
